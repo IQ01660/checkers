@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace checkersGame
+namespace checkers
 {
     public partial class Form1 : Form
     {
         bool firstChoose = false;
+        bool redTurn = true;
         public Form1()
         {
             InitializeComponent();
@@ -23,9 +24,7 @@ namespace checkersGame
             // creating the playground
             int leftPosField = 40;
             int topPosField = 20;
-            int redCount = 0;
-            int whiteCount = 0;
-            
+
             for (int rows = 0; rows < 8; rows++)
             {
                 for (int cols = 0; cols < 8; cols++)
@@ -44,24 +43,24 @@ namespace checkersGame
                     if ((rows % 2 == 0 && cols % 2 == 0) || (rows % 2 == 1 && cols % 2 == 1))
                     {
                         FieldHolder.fieldMatrix[rows, cols].BackColor = Color.LightYellow;
-                        
+
                         Controls.Add(FieldHolder.fieldMatrix[rows, cols]);
                     }
                     // even && odd || odd && even
                     else
                     {
                         FieldHolder.fieldMatrix[rows, cols].BackColor = Color.Black;
-                        
+
                         Controls.Add(FieldHolder.fieldMatrix[rows, cols]);
-                        
-                        if (rows == 0 || rows == 1 || rows == 2 )
+
+                        if (rows == 0 || rows == 1 || rows == 2)
                         {
 
                             FieldHolder.fieldMatrix[rows, cols].Text = "o";
                             FieldHolder.fieldMatrix[rows, cols].ForeColor = Color.Red;
                             FieldHolder.fieldMatrix[rows, cols].Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                             EmptyInfoHolder.emptyData[rows, cols] = false;
-                            
+
                         }
                         if (rows == 5 || rows == 6 || rows == 7)
                         {
@@ -71,7 +70,7 @@ namespace checkersGame
                             EmptyInfoHolder.emptyData[rows, cols] = false;
                             FieldHolder.fieldMatrix[rows, cols].Click += new System.EventHandler(this.white_Click);
                         }
-                        if (EmptyInfoHolder.emptyData[rows,cols] == true)
+                        if (EmptyInfoHolder.emptyData[rows, cols] == true)
                         {
                             FieldHolder.fieldMatrix[rows, cols].Click += new System.EventHandler(this.space_Click);
                         }
@@ -87,29 +86,51 @@ namespace checkersGame
         private void white_Click(object sender, EventArgs e)
         {
             var myFigure = sender as Button;
+            foreach(var item in FieldHolder.fieldMatrix)
+            {
+                if (item.BackColor == Color.DarkBlue)
+                {
+                    item.BackColor = Color.Black;
+                }
+            }
             FigureHolder.figure.Clear();
             FigureHolder.figure.Add(myFigure);
-            firstChoose = true;
-            myFigure.Click -= new System.EventHandler(this.white_Click);
+            FigureHolder.figure[0].BackColor = Color.DarkBlue; 
+            if (firstChoose == false)
+            {
+                firstChoose = true;
+            }
         }
         private void space_Click(object obj, EventArgs eve)
         {
-            if (firstChoose == true)
+            var mySpace = obj as Button;
+            if (firstChoose == true && mySpace.Text != "o" && FigureHolder.figure[0].Top - mySpace.Top == 70 && (Math.Abs(mySpace.Left - FigureHolder.figure[0].Left) == 70))
             {
-                var mySpace = obj as Button;
-                if (mySpace.Text != "o")
+                
+                mySpace.Text = "o";
+                mySpace.ForeColor = Color.White;
+                mySpace.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                mySpace.Click += new System.EventHandler(this.white_Click);
+                mySpace.Click -= new System.EventHandler(this.space_Click);
+                FigureHolder.figure[0].Text = "";
+                FigureHolder.figure[0].BackColor = Color.Black;
+                FigureHolder.figure[0].Click -= new System.EventHandler(this.white_Click);
+                FigureHolder.figure[0].Click += new System.EventHandler(this.space_Click);
+                firstChoose = false;
+                // moving red figures
+                if (redTurn == true)
                 {
-                    mySpace.Text = "o";
-                    mySpace.ForeColor = Color.White;
-                    mySpace.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-                    mySpace.Click += new System.EventHandler(this.white_Click);
-                    //mySpace = false;
-                    FigureHolder.figure[0].Text = "";
-                    FigureHolder.figure[0].Click -= new System.EventHandler(this.white_Click);
-                    FigureHolder.figure[0].Click += new System.EventHandler(this.space_Click);
+                    FieldHolder.fieldMatrix[2, 5].Text = "";
+                    FieldHolder.fieldMatrix[3, 6].Text = "o";
+                    FieldHolder.fieldMatrix[3, 6].Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                    FieldHolder.fieldMatrix[3, 6].ForeColor = Color.Red;
+
+                    FieldHolder.fieldMatrix[3, 6].Click -= new System.EventHandler(this.space_Click);
+
+                    FieldHolder.fieldMatrix[2, 5].Click += new System.EventHandler(this.space_Click);
+                    redTurn = false;
                 }
             }
-            firstChoose = false;
         }
     }
     class FieldHolder
@@ -118,7 +139,7 @@ namespace checkersGame
     }
     class EmptyInfoHolder
     {
-        static public bool[,] emptyData = new bool[8,8] { { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true } };
+        static public bool[,] emptyData = new bool[8, 8] { { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true }, { true, true, true, true, true, true, true, true } };
     }
     class FigureHolder
     {
