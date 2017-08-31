@@ -1,0 +1,9 @@
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\bin\Debug\checkersGame.exe.config
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\bin\Debug\checkersGame.exe
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\bin\Debug\checkersGame.pdb
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.csprojResolveAssemblyReference.cache
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.Form1.resources
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.Properties.Resources.resources
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.csproj.GenerateResource.Cache
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.exe
+c:\users\p102\documents\visual studio 2017\Projects\checkersGame\checkersGame\obj\Debug\checkersGame.pdb
