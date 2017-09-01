@@ -16,6 +16,7 @@ namespace checkers
     {
         bool firstChoose = false;
         bool redTurn = true;
+        bool turnFinished = false;
         public Form1()
         {
             InitializeComponent();
@@ -119,18 +120,77 @@ namespace checkers
                 FigureHolder.figure[0].Click -= new System.EventHandler(this.white_Click);
                 FigureHolder.figure[0].Click += new System.EventHandler(this.space_Click);
                 firstChoose = false;
+                turnFinished = false;
                 // moving red figures
                 if (redTurn == true)
                 {
-                    FieldHolder.fieldMatrix[2, 5].Text = "";
-                    FieldHolder.fieldMatrix[3, 6].Text = "o";
-                    FieldHolder.fieldMatrix[3, 6].Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-                    FieldHolder.fieldMatrix[3, 6].ForeColor = Color.Red;
+                    foreach (var item in FieldHolder.fieldMatrix)
+                    {
+                        for(int v = 0 ; v < 8; v++)
+                        {
+                            //if (turnFinished == true)
+                            //{
+                            //    break;
+                            //}
+                            for (int h = 0; h < 8; h++)
+                            {
+                                //if (turnFinished == true)
+                                //{
+                                //    break;
+                                //}
+                                if ((item == FieldHolder.fieldMatrix[v, h]) && FieldHolder.fieldMatrix[v, h].Text == "o" && FieldHolder.fieldMatrix[v, h].ForeColor == Color.Red && v != 7 && h != 7)
+                                {
+                                    int newV = v + 1;
+                                    int newHRight = h + 1;
+                                    //MessageBox.Show(Convert.ToString(v) + " " + Convert.ToString(h));
 
-                    FieldHolder.fieldMatrix[3, 6].Click -= new System.EventHandler(this.space_Click);
+                                    if (FieldHolder.fieldMatrix[newV, newHRight].Text == "")
+                                    {
 
-                    FieldHolder.fieldMatrix[2, 5].Click += new System.EventHandler(this.space_Click);
-                    redTurn = false;
+                                        FieldHolder.fieldMatrix[v, h].Text = "";
+                                        FieldHolder.fieldMatrix[newV, newHRight].Text = "o";
+                                        FieldHolder.fieldMatrix[newV, newHRight].Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                                        FieldHolder.fieldMatrix[newV, newHRight].ForeColor = Color.Red;
+
+                                        FieldHolder.fieldMatrix[newV, newHRight].Click -= new System.EventHandler(this.space_Click);
+
+                                        FieldHolder.fieldMatrix[newV, newHRight].Click += new System.EventHandler(this.space_Click);
+                                        turnFinished = true;
+                                        break;
+                                    }
+                                    
+
+                                }
+                                else if (v != 7 && h == 7 && item == FieldHolder.fieldMatrix[v, h] && FieldHolder.fieldMatrix[v, h].Text == "o" && FieldHolder.fieldMatrix[v, h].ForeColor == Color.Red)
+                                {
+                                    int newV = v + 1;
+                                    int newHLeft = h - 1;
+                                    MessageBox.Show(Convert.ToString(v) + " " + Convert.ToString(h));
+                                    if (FieldHolder.fieldMatrix[newV, newHLeft].Text == "")
+                                    {
+                                        FieldHolder.fieldMatrix[v, h].Text = "";
+                                        FieldHolder.fieldMatrix[newV, newHLeft].Text = "o";
+                                        FieldHolder.fieldMatrix[newV, newHLeft].Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                                        FieldHolder.fieldMatrix[newV, newHLeft].ForeColor = Color.Red;
+
+                                        FieldHolder.fieldMatrix[newV, newHLeft].Click -= new System.EventHandler(this.space_Click);
+
+                                        FieldHolder.fieldMatrix[newV, newHLeft].Click += new System.EventHandler(this.space_Click);
+                                        turnFinished = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (turnFinished == true)
+                            {
+                                break;
+                            }
+                        }
+                        if (turnFinished == true)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -155,6 +215,11 @@ namespace checkers
     {
         static public List<int> figureTop = new List<int>();
     }
+    class RandomNumHolder
+    {
+        static public List<int> randPosNum = new List<int>();
+    }
+
 
 }
 ```
