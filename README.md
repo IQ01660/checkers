@@ -17,6 +17,7 @@ namespace checkers
         bool firstChoose = false;
         bool redTurn = true;
         bool turnFinished = false;
+        int someValue = 1;
         public Form1()
         {
             InitializeComponent();
@@ -107,20 +108,70 @@ namespace checkers
         private void space_Click(object obj, EventArgs eve)
         {
             var mySpace = obj as Button;
-            if (firstChoose == true && mySpace.Text != "o" && FigureHolder.figure[0].Top - mySpace.Top == 70 && (Math.Abs(mySpace.Left - FigureHolder.figure[0].Left) == 70))
+            if ((firstChoose == true && mySpace.Text != "o") && (((FigureHolder.figure[0].Top - mySpace.Top == 70) && (Math.Abs(mySpace.Left - FigureHolder.figure[0].Left) == 70)) || (FigureHolder.figure[0].Top - mySpace.Top == 140 && Math.Abs(mySpace.Left - FigureHolder.figure[0].Left) == 140 ) ) )
             {
                 
                 mySpace.Text = "o";
                 mySpace.ForeColor = Color.White;
                 mySpace.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                
                 mySpace.Click += new System.EventHandler(this.white_Click);
                 mySpace.Click -= new System.EventHandler(this.space_Click);
                 FigureHolder.figure[0].Text = "";
                 FigureHolder.figure[0].BackColor = Color.Black;
                 FigureHolder.figure[0].Click -= new System.EventHandler(this.white_Click);
                 FigureHolder.figure[0].Click += new System.EventHandler(this.space_Click);
+                
+                if (FigureHolder.figure[0].Top - mySpace.Top == 140 && Math.Abs(mySpace.Left - FigureHolder.figure[0].Left) == 140)
+                {
+                    
+                    if (mySpace.Left - FigureHolder.figure[0].Left == 140)
+                    {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            for (int j = 0; j < 8; j++)
+                            {
+                                
+                                if (mySpace == FieldHolder.fieldMatrix[i, j] )
+                                {
+                                    
+                                    int newRedDelY = i + 1;
+
+                                    int newRedDelX = j - 1;
+                                    FieldHolder.fieldMatrix[newRedDelY, newRedDelX].Text = "";
+                                    FieldHolder.fieldMatrix[newRedDelY, newRedDelX].Click += new System.EventHandler(space_Click);
+                                    someValue = 100;
+                                    break;
+                                }
+                            }
+                            if(someValue == 100)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            for (int j = 0; j < 8; j++)
+                            {
+                                
+                                if (mySpace == FieldHolder.fieldMatrix[i, j] )
+                                {
+                                    
+                                    int newRedDelY = i + 1;
+                                    int newRedDelX = j + 1;
+                                    FieldHolder.fieldMatrix[newRedDelY, newRedDelX].Text = "";
+                                    FieldHolder.fieldMatrix[newRedDelY, newRedDelX].Click += new System.EventHandler(space_Click);
+                                }
+                            }
+                        }
+                    }
+                }
                 firstChoose = false;
                 turnFinished = false;
+                
                 // moving red figures
                 if (redTurn == true)
                 {
@@ -142,6 +193,10 @@ namespace checkers
                                 {
                                     int newV = v + 1;
                                     int newHRight = h + 1;
+                                    if (newHRight == 8)
+                                    {
+                                        newHRight = 7;
+                                    }
                                     //MessageBox.Show(Convert.ToString(v) + " " + Convert.ToString(h));
 
                                     if (FieldHolder.fieldMatrix[newV, newHRight].Text == "")
@@ -154,7 +209,7 @@ namespace checkers
 
                                         FieldHolder.fieldMatrix[newV, newHRight].Click -= new System.EventHandler(this.space_Click);
 
-                                        FieldHolder.fieldMatrix[newV, newHRight].Click += new System.EventHandler(this.space_Click);
+                                        FieldHolder.fieldMatrix[v,h].Click += new System.EventHandler(this.space_Click);
                                         turnFinished = true;
                                         break;
                                     }
@@ -164,8 +219,13 @@ namespace checkers
                                 else if (v != 7 && h == 7 && item == FieldHolder.fieldMatrix[v, h] && FieldHolder.fieldMatrix[v, h].Text == "o" && FieldHolder.fieldMatrix[v, h].ForeColor == Color.Red)
                                 {
                                     int newV = v + 1;
+                                   
                                     int newHLeft = h - 1;
-                                    MessageBox.Show(Convert.ToString(v) + " " + Convert.ToString(h));
+                                    if (newHLeft == 8)
+                                    {
+                                        newHLeft = 7;
+                                    }
+                                    //MessageBox.Show(Convert.ToString(v) + " " + Convert.ToString(h));
                                     if (FieldHolder.fieldMatrix[newV, newHLeft].Text == "")
                                     {
                                         FieldHolder.fieldMatrix[v, h].Text = "";
@@ -175,7 +235,7 @@ namespace checkers
 
                                         FieldHolder.fieldMatrix[newV, newHLeft].Click -= new System.EventHandler(this.space_Click);
 
-                                        FieldHolder.fieldMatrix[newV, newHLeft].Click += new System.EventHandler(this.space_Click);
+                                        FieldHolder.fieldMatrix[v,h].Click += new System.EventHandler(this.space_Click);
                                         turnFinished = true;
                                         break;
                                     }
